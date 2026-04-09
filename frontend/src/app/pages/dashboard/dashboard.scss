@@ -1,183 +1,74 @@
-.dashboard-layout {
-  display: block;
-  position: relative;
-  min-height: 100vh;
-  overflow-x: hidden;
-  //background-color: #f4f7f6;
-  padding: 0px 40px 40px 80px;
-  transition: all 0.3s ease-in-out;
-  min-height: 100vh;
-
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
-}
-
-:host {
-  display: block;
-  height: auto;
-}
-// 1. Sidebar
-.sidebar-container {
-  position: fixed;
+.map-container {
+  position: absolute;
   top: 0;
   left: 0;
-  width: 280px;
+  width: 100vw;
   height: 100vh;
-  z-index: 1000;
-  visibility: hidden;
-  transform: translate(-100%);
-  transition: transform 0.3s ease-in-out;
-
-  &.active {
-    transform: translateX(0);
-    visibility: visible;
-    pointer-events: auto;
-  }
+  z-index: 1; /* Sotto la Navbar che ha z-index 3000 */
 }
 
-//Hamburger Menu
-.hamburger-menu {
-  position: fixed;
-  top: 25px;
-  left: 25px;
-  z-index: 2000;
-  border: none;
-  background: none;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  padding: 0px;
-
-
-
-  .hamburger-box {
-    width: 30px;
-    height: 24px;
-    position: relative;
-    display: inline-block;
-  }
-
-  .hamburger-inner {
-    top: 50%;
-    transform: translateY(-50%);
-    &,
-    &::before,
-    &::after {
-      width: 30px;
-      height: 3px;
-      background-color: #ff6b6b;
-      border-radius: 4px;
-      position: absolute;
-      transition:
-        transform 0.15s ease,
-        opacity 0.15 ease;
-    }
-    &::before {
-      content: '';
-      top: -10px;
-    }
-    &::after {
-      content: '';
-      bottom: -10px;
-    }
-  }
-  &.open {
-    .hamburger-inner {
-      transform: rotate(45deg); /* Ruota la linea centrale */
-
-      &::before {
-        top: 0;
-        opacity: 0; /* Nasconde la linea superiore */
-      }
-      &::after {
-        bottom: 0;
-        transform: rotate(-90deg); /* Ruota la linea inferiore per formare la X */
-      }
-    }
-  }
+#map {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
-// 2. Main Content
-.main-content {
-  grid-column: 2;
-  padding: 40px;
-  padding-top: 120px;
-  overflow-y: auto; // Rende scorrevole solo il feed centrale
-
-  .content-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-
-    h1 {
-      color: #1a1a2e;
-      font-size: 2rem;
-    }
-    .btn-add-colony {
-      background-color: #ff6b6b; // Rosso "Azione"
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 30px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.3s;
-      &:hover {
-        background-color: #fa5252;
-      }
-    }
-  }
-
-  .colony-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); // Card responsive
-    gap: 20px;
-  }
-}
-
-// 3. Widgets
-.widgets-container {
-  grid-column: 3;
-  padding: 40px 20px;
-  background-color: white;
-  border-left: 1px solid #e0e0e0;
-
-  .widget {
-    background: #f9fbfd;
+::ng-deep .leaflet-custom-popup {
+  .leaflet-popup-content-wrapper {
+    padding: 0;
+    overflow: hidden;
     border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 20px;
-    border: 1px solid #eaeaea;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  }
 
-    h3 {
-      color: #1a1a2e;
-      margin-bottom: 15px;
-    }
-    .map-placeholder {
-      height: 200px;
-      background: #e0e0e0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+  .leaflet-popup-content {
+    margin: 0;
+    width: 350px !important;
+  }
+
+  .leaflet-popup-tip {
+    background: white; /* Il triangolino sotto */
+  }
+
+  /* Lo stile interno che hai scritto tu */
+  .custom-popup {
+    display: flex;
+    padding: 15px;
+    gap: 15px;
+    
+    .popup-img {
+      width: 80px;
+      height: 80px;
       border-radius: 10px;
-      color: #888;
+      object-fit: cover;
     }
-    ul {
-      list-style: none;
-      padding: 0;
-      li {
-        padding: 10px 0;
-        border-bottom: 1px solid #eee;
-        color: #555;
+
+    h3 { margin: 0; font-size: 1.1rem; color: #333; }
+    p { font-size: 0.85rem; color: #666; }
+
+    .popup-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+
+      .view-btn {
+        background: white;
+        border: 1px solid #eee;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-weight: 600;
+        cursor: pointer;
       }
     }
+  }
+}
+
+/* Stile del marker a forma di gatto */
+.custom-cat-icon {
+  .cat-marker {
+    font-size: 30px;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+    cursor: pointer;
   }
 }

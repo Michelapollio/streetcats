@@ -1,0 +1,147 @@
+:host {
+  --primary-green: #5d7c77;
+  --secondary-orange: #f0a24e;
+  --bg-blue: #b9d8df; // Il colore azzurro dello sfondo nell'immagine
+  
+  display: block;
+  min-height: 100vh;
+  background-color: var(--bg-blue);
+  padding: 120px 40px 40px 40px; // Padding top elevato per non finire sotto la navbar
+}
+
+.add-cat-card {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 15px;
+  display: flex;
+  overflow: visible;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  min-height: auto;
+
+  @media (max-width: 990px) {
+    flex-direction: column;
+  }
+}
+
+/* PANNELLI */
+.left-panel {
+  flex: 1.5;
+  padding: 30px;
+  border-right: 1px solid #eee;
+}
+
+.right-panel {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background: #fdfdfd;
+}
+
+/* INPUT E LABEL */
+.input-group {
+  margin-bottom: 25px;
+
+  label {
+    display: block;
+    color: var(--primary-green);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+
+  input[type="text"], textarea{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: 1.5px solid #dce4e2;
+    background: #f1f4f6;
+    font-size: 1rem;
+    &:focus { outline: none; border-color: var(--primary-green); }
+  }
+}
+
+/* UPLOAD ZONE */
+.upload-zone {
+  border: 2px dashed #dce4e2;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+
+  .preview-box img {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  .upload-controls {
+    text-align: center;
+    flex: 1;
+    color: var(--primary-green);
+    p { margin: 0; font-weight: 500; }
+    .upload-icon { font-size: 2rem; }
+  }
+}
+
+/* MARKDOWN EDITOR */
+.markdown-editor {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1.5px solid #dce4e2;
+
+  .editor-toolbar {
+    background: #9ab4b0; // Il verde chiaro della toolbar nell'immagine
+    padding: 8px 15px;
+    display: flex;
+    gap: 15px;
+
+    button {
+      background: none;
+      border: none;
+      color: white;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+  }
+
+  textarea {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    min-height: 150px;
+    background: #f9fbfb;
+    resize: vertical;
+    font-family: inherit;
+    &:focus { outline: none; }
+  }
+}
+
+/* MAPPA E BOTTONE CONFIRM */
+#map-selection {
+  width: 100%;
+  height: 400px; /* DEVE avere un'altezza fissa in px */
+  border-radius: 12px;
+  background-color: #f0f0f0; // Grigio di test
+}
+
+.btn-confirm {
+  width: 100%;
+  background: var(--secondary-orange);
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  text-transform: capitalize;
+  &:hover { background: #e0923e; }
+}

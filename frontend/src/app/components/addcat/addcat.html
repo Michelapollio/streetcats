@@ -1,0 +1,44 @@
+<div class="page-wrapper">
+  <div class="add-cat-card">
+    
+    <div class="left-panel">
+      <div class="input-group">
+        <label>Cat Title</label>
+        <input type="text" formControlName="title" placeholder="e.g., Tabby in Central Park">
+      </div>
+
+      <div class="input-group">
+        <label>Photo Upload</label>
+        <div class="upload-zone">
+          <div class="preview-box" *ngIf="imagePreview">
+            <img [src]="imagePreview" alt="Preview">
+          </div>
+          <div class="upload-controls" (click)="fileInput.click()">
+            <div class="upload-icon">☁️</div>
+            <p>Drag or Click to Upload</p>
+            <input #fileInput type="file" (change)="onFileSelected($event)" hidden>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>Description</label>
+        <div class="markdown-editor">
+          <div class="editor-toolbar">
+            <button type="button">B</button>
+            <button type="button">I</button>
+            <button type="button">🔗</button>
+            <button type="button">&lt;/&gt;</button>
+          </div>
+          <textarea formControlName="description"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div id="map-selection"></div>
+      <button class="btn-confirm" (click)="saveCat()">Confirm Location</button>
+    </div>
+
+  </div>
+</div>

@@ -1,1 +1,18 @@
 <!DOCTYPE html>
+<div class="map-container">
+  <div id="map"></div>
+
+  <div class="cat-info-overlay" *ngIf="selectedCat">
+    <div class="popup-card">
+      <img [src]="selectedCat.photo" class="cat-img">
+      <div class="details">
+        <h3>{{ selectedCat.name }}</h3>
+        <p>{{ selectedCat.description }}</p>
+        <div class="footer">
+          <span>{{ selectedCat.timeAgo }}</span>
+          <button class="btn-details">View Details</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
