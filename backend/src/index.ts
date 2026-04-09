@@ -1,12 +1,18 @@
 import express from 'express';
-//import cors from 'cors';
+import cors from 'cors';
 import authRoutes from './routes/authRoutes.js'
 import sequelize from './config/database.js';
 import User from './models/userModel.js';
-import { register } from './controllers/authController.js';
+import { login, register } from './controllers/authController.js';
 
 const app = express();
 app.use(express.json());
+app.use(cors());
+
+
+app.use('/api', authRoutes);
+//app.post('/api/register', register);
+//app.post('/api/login', login);
 
 const startServer = async () => {
   try {
@@ -23,15 +29,5 @@ const startServer = async () => {
   }
 };
 
-app.use('/api/register', register);
-// Rotta rapida di test per creare un utente
-/*app.post('/users', async (req, res) => {
-  try {
-    const user = await User.create(req.body);
-    res.status(201).json(user);
-  } catch (err: any) {
-    res.status(400).json({ error: err.message });
-  }
-});*/
 
 startServer();
