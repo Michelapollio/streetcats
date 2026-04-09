@@ -1,0 +1,111 @@
+/* navbar.component.scss */
+:host {
+  display: block;
+  position: fixed;
+  top: 20px; /* Spazio dal bordo superiore */
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0 30px; /* Spazio dai bordi laterali */
+}
+
+.navbar-content {
+  background: white;
+  height: 75px;
+  border-radius: 12px; /* Arrotondamento moderato come in foto */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/*LOGO SECTION*/
+/* LOGO SECTION */
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  
+  .logo-img {
+    height: 35px; /* Dimensione precisa per l'icona zampa */
+    width: auto;
+  }
+  
+  .brand-name {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #5d7c77; /* Colore verde petrolio spento come in foto */
+    letter-spacing: 0.5px;
+  }
+}
+
+/* SEARCH BAR SECTION */
+.search-section {
+  flex: 0 1 450px; /* Lunghezza barra */
+  
+  .search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    input {
+      width: 100%;
+      background: #f1f4f6; /* Grigio chiaro della foto */
+      border: none;
+      padding: 12px 45px 12px 20px;
+      border-radius: 25px; /* Questo rimane ovale */
+      font-size: 0.95rem;
+      color: #666;
+
+      &::placeholder { color: #999; }
+      &:focus { outline: none; background: #ebedf0; }
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 15px;
+      color: #777;
+      font-size: 1rem;
+    }
+  }
+}
+
+/* NAV MENU & BUTTONS */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+
+  .nav-item {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    &:hover { color: #5d7c77; }
+  }
+
+  .auth-buttons {
+    display: flex;
+    gap: 12px;
+
+    .btn-login {
+      background: transparent;
+      border: 1px solid #333;
+      padding: 10px 25px;
+      border-radius: 20px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .btn-register {
+      background: #f0a24e; /* Arancione pastello della foto */
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      &:hover { background: #e0923e; }
+    }
+  }
+}
