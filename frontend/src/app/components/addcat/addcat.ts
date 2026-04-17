@@ -1,132 +1,155 @@
+import { Component, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { MapComponent } from '../map/map';
 import * as L from 'leaflet';
+import { ElementRef } from '@angular/core';
 import { MarkdownModule } from 'ngx-markdown';
+import { CatsService } from '../../services/cats';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-addcat',
-  imports: [CommonModule,
-    ReactiveFormsModule,
-    MarkdownModule
-  ],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, MapComponent, MarkdownModule],
   templateUrl: './addcat.html',
   styleUrl: './addcat.scss',
 })
-export class Addcat implements AfterViewInit{
+export class Addcat implements OnInit, AfterViewInit {
+  @ViewChild(MapComponent) mapComp!: MapComponent;
+  @ViewChild('editor') editorElement!: ElementRef<HTMLTextAreaElement>;
+
   catForm!: FormGroup;
   imagePreview: string | null = null;
-  map!: L.Map;
-  selectedMarker: L.Marker | null = null;
-  selectedCoords: L.LatLng | null = null;
-  isLocationConfirmed: boolean = false;
+  currentMarker: L.Marker | null = null;
 
-  constructor(private fb: FormBuilder, private router: Router) {
-    this.catForm = this.fb.group({
-      title: ['', Validators.required],
-      description: ['', Validators.required],
-      photo: [null, Validators.required]
+  constructor(
+    private catService: CatsService,
+    private router: Router,
+  ) {}
+
+  ngOnInit() {
+    this.catForm = new FormGroup({
+      title: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
+      photo: new FormControl(null, Validators.required),
+      latitude: new FormControl(null, Validators.required),
+      longitude: new FormControl(null, Validators.required),
     });
   }
 
- ngAfterViewInit() {
-   setTimeout(()=>{
-    this.initSelectionMap();
-   }, 100);
- }
-
-  initSelectionMap() {
-    this.map = L.map('map-select').setView([40.828, 14.190], 15);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(this.map);
-
-    // Click sulla mappa per posizionare il gatto
-    this.map.on('click', (e: L.LeafletMouseEvent) => {
-      this.selectedCoords = e.latlng;
-      
-      if (this.selectedMarker) {
-        this.selectedMarker.setLatLng(e.latlng);
-      } else {
-        this.selectedMarker = L.marker(e.latlng, { draggable: true }).addTo(this.map);
-      }
-    });
+  ngAfterViewInit() {
+    // Forza il ricalcolo della mappa se necessario (bug Flexbox)
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 200);
   }
 
+  // Gestione Immagine
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => this.imagePreview = reader.result as string;
-      reader.readAsDataURL(file);
       this.catForm.patchValue({ photo: file });
+      const reader = new FileReader();
+      reader.onload = () => (this.imagePreview = reader.result as string);
+      reader.readAsDataURL(file);
     }
   }
 
-  async saveCat() {
-    if (this.catForm.invalid || !this.selectedCoords){
-      alert("Compila tutti i campi e seleziona la posizione!");
-      return;
+  // Clic sulla Mappa
+  onMapClick(event: L.LeafletEvent) {
+    const e = event as L.LeafletMouseEvent;
+    const { lat, lng } = e.latlng;
+
+    // Aggiorna Form
+    this.catForm.patchValue({ latitude: lat, longitude: lng });
+
+    // Gestione Marker (Personalizzato con icona gatto)
+    if (this.currentMarker) {
+      this.currentMarker.remove();
     }
 
-    const newCat = {
-      title: this.catForm.value.title,
-      description: this.catForm.value.description,
-      latitude: this.selectedCoords.lat,
-      longitude: this.selectedCoords.lng,
-      photo: this.imagePreview,
-      date: new Date().toISOString()
-    };
-
-    try {
-      //chiamata al database
-      //await this.catService.createCat(newCat).toPromise();
-
-      console.log("Gatto salvato con successo !", newCat);
-      alert("Gatto aggiunto alla colonia");
-
-      //ritorno alla home
-      this.router.navigate(['/']);
-    } catch (error){
-      console.error("Errore durante il salvataggio", error);
-    }
-    /*const finalData = {
-      ...this.catForm.value,
-      location: this.selectedCoords
-    };
-    console.log("Salvataggio gatto in corso...", finalData);
-    // Qui andrà la chiamata al tuo servizio Backend*/
+    // Usiamo un DivIcon per l'icona personalizzata (faccia gatto)
+    this.currentMarker = this.mapComp.addMarker(lat, lng, '🐱');
   }
 
-  insertMarkup(type: string){
-    const textarea = document.querySelector('textarea');
-    if(!textarea) return;
+  // Markdown tool
+  addBold() {
+    const desc = this.catForm.get('description')?.value;
+    this.catForm.patchValue({ description: desc + '** friendly calico cat**' });
+  }
 
+  insertMarkup(type: string): void {
+    const textarea = this.editorElement.nativeElement;
     const start = textarea.selectionStart;
-    const end= textarea.selectionEnd;
-    const text = this.catForm.value.description || '';
-    const selectedText = text.substring(start, end);
+    const end = textarea.selectionEnd;
+    const currentText = textarea.value;
 
-    let newText = '';
+    let markup = '';
+    let selection = currentText.substring(start, end);
+
     switch (type) {
-      case 'bold': newText = `**${selectedText || 'testo'}**`; break;
-      case 'italic': newText = `*${selectedText || 'testo'}*`; break;
-      case 'link': newText = `[${selectedText || 'link'}](https://...)`; break;
+      case 'bold':
+        markup = `**${selection || 'bold text'}**`;
+        break;
+      case 'italic':
+        markup = `*${selection || 'italic text'}*`;
+        break;
+      case 'link':
+        markup = `[${selection || 'link text'}](https://example.com)`;
+        break;
+      case 'code':
+        markup = `\`${selection || 'code'}\``;
+        break;
     }
 
-    const updatedValue = text.substring(0, start) + newText + text.substring(end);
-    this.catForm.patchValue({description: updatedValue});
+    const newText = currentText.substring(0, start) + markup + currentText.substring(end);
+
+    this.catForm.patchValue({ description: newText });
+
+    setTimeout(() => {
+      textarea.focus();
+      const newCursorPos = start + markup.length;
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+    });
   }
 
-  confirmLocation(){
-    if(this.selectedCoords){
-      console.log("Posizione confermata: ", this.selectedCoords);
-      this.isLocationConfirmed=true;
+  // INVIO
+  saveCat() {
+    if (this.catForm.valid) {
+      const formData = new FormData();
+
+      formData.append('title', this.catForm.get('title')?.value);
+      formData.append('description', this.catForm.get('description')?.value);
+      formData.append('latitude', this.catForm.get('latitude')?.value);
+      formData.append('longitude', this.catForm.get('longitude')?.value);
+
+      const photoFile = this.catForm.get('photo')?.value;
+      if (photoFile) {
+        formData.append('image', photoFile, photoFile.name);
+      }
+
+      console.log('Invio dati al server...');
+
+      this.catService.saveCat(formData).subscribe({
+        next: (response) => {
+          console.log('Salvataggio riuscito !', response);
+          alert('Gatto aggiunto con successo! 🐾');
+          this.router.navigate(['/dashboard']); //DA CAMBIAREEE
+        },
+        error: (err) => {
+          console.error('Errore durante il salvataggio:', err);
+          alert('Ops! Qualcosa è andato storto durante il salvataggio.');
+        },
+      });
     } else {
-      alert("Per favore, seleziona un punto sulla mappa prima di confermare");
+      alert('Per favore, compila tutti i campi e seleziona la posizione sulla mappa.');
     }
   }
 
-   goBack(){
-      this.router.navigate(['/']);
-    }
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach((control) => {
+      control.markAsTouched();
+    });
+  }
 }

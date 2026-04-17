@@ -24,7 +24,6 @@ export class MapComponent implements AfterViewInit {
   @Input() interactive: boolean = true;
 
   @Output() mapClick = new EventEmitter<L.LeafletEvent>();
-
   private map!: L.Map;
 
   constructor() {}
@@ -32,12 +31,18 @@ export class MapComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.initMap();
 
+    const resizeObserver = new ResizeObserver(() => {
+      if (this.map) {
+        this.map.invalidateSize();
+      }
+    });
+
     // Aspetta un piccolo istante e forza il ricalcolo delle dimensioni
     setTimeout(() => {
       if (this.map) {
         this.map.invalidateSize();
       }
-    }, 100);
+    }, 300);
   }
 
   private initMap(): void {
