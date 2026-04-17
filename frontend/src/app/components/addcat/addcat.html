@@ -1,5 +1,11 @@
 <div class="page-wrapper">
   <div class="add-cat-card">
+
+    <button class="btn-back" type="button" (click)="goBack()">
+        ←
+    </button>
+
+    <div></div>
     <form [formGroup]="catForm" (ngSubmit)="saveCat()" class="left-panel">
       <div class="input-group">
         <label>Title</label>
@@ -46,6 +52,10 @@
           </div>
         </div>
       </div>
+
+      <button class="btn-save" type="submit" [disabled]="catForm.invalid">
+        Salva avvistamento
+      </button>
     </form>
 
     <div class="right-panel">

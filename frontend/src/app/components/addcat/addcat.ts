@@ -114,6 +114,10 @@ export class Addcat implements OnInit, AfterViewInit {
     });
   }
 
+  goBack() {
+    this.router.navigate(['/dashboard']);
+  }
+
   // INVIO
   saveCat() {
     if (this.catForm.valid) {
