@@ -16,10 +16,17 @@
       <a routerLink="/explore" class="nav-item">Explore</a>
       <a routerLink="/about" class="nav-item">About</a>
 
-      <div class="auth-buttons">
-        <button routerLink="/login" class="btn-login">Login</button>
-        <button routerLink="/register" class="btn-register">Register</button>
-      </div>
+      <ng-container *ngIf="isLoggedIn$ | async as loggedIn; else guestButtons">
+        <a routerLink="/profile" class="nav-item profile-link">My Profile</a>
+        <button (click)="onLogout()" class="btn-logout">Logout</button>
+      </ng-container>
+
+      <ng-template #guestButtons>
+        <div class="auth-buttons">
+          <button routerLink="/login" class="btn-login">Login</button>
+          <button routerLink="/register" class="btn-register">Register</button>
+        </div>
+      </ng-template>
     </div>
   </div>
 </nav>

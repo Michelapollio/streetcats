@@ -1,0 +1,95 @@
+:host {
+  --primary-green: #5d7c77;
+  --secondary-orange: #f0a24e;
+  display: block;
+}
+
+.login-page {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.login-side {
+  flex: 1;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  z-index: 10;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+
+  .logo-container {
+    text-align: center;
+    margin-bottom: 40px;
+    img {
+      width: 100px; /* Logo controllato */
+      height: auto;
+      margin-bottom: 10px;
+    }
+    h1 {
+      color: var(--primary-green);
+      font-size: 2.2rem;
+      font-weight: 800;
+      span { color: var(--secondary-orange); }
+    }
+  }
+}
+
+.input-group {
+  margin-bottom: 20px;
+  label {
+    display: block;
+    color: var(--primary-green);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  input {
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: 1.5px solid #dce4e2;
+    background: #f1f4f6;
+    box-sizing: border-box;
+    &:focus { outline: none; border-color: var(--primary-green); }
+  }
+  .error-text { color: #dc3545; font-size: 0.8rem; margin-top: 5px; display: block; }
+}
+
+.btn-login {
+  width: 100%;
+  padding: 15px;
+  background-color: var(--secondary-orange);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-weight: 700;
+  cursor: pointer;
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+.map-side {
+  flex: 1.5;
+  height: 100vh;
+  position: relative;
+  
+  /* Assicura che la componente mappa riempia il pannello */
+  app-map {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .map-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(93, 124, 119, 0.05); /* Filtro leggerissimo per stile */
+    pointer-events: none;
+  }
+}

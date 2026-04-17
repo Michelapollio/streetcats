@@ -1,10 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
+<app-navbar></app-navbar>
 <div class="map-container">
   <div id="map"></div>
 
+  <button class="fab-add-cat" (click)="navigateToAddCat()">
+    <span class="plus-icon">+</span>
+  </button>
+
   <div class="cat-info-overlay" *ngIf="selectedCat">
     <div class="popup-card">
-      <img [src]="selectedCat.photo" class="cat-img">
+      <img [src]="selectedCat.photo" class="cat-img" />
       <div class="details">
         <h3>{{ selectedCat.name }}</h3>
         <p>{{ selectedCat.description }}</p>

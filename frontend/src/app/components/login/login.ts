@@ -1,37 +1,77 @@
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { ParseSourceFile } from '@angular/compiler';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { 
+  ReactiveFormsModule, 
+  FormGroup, 
+  FormControl, 
+  Validators 
+} from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth';
+import { MapComponent } from '../map/map';
 
 @Component({
   selector: 'app-login',
-  standalone:true,
+  standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule
+    CommonModule, 
+    ReactiveFormsModule, 
+    RouterModule, 
+    MapComponent
   ],
   templateUrl: './login.html',
-  styleUrl: './login.scss',
+  styleUrl: './login.scss'
 })
-export class Login {
-  loginData={email:'', password:''};
+export class Login implements OnInit {
+  // Dichiarazione del form
+  loginForm!: FormGroup;
 
-  constructor(private http: HttpClient, private router:Router){}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
-  onLogin(){
-    this.http.post('http://localhost:3000/api/login', this.loginData).subscribe({
-      next: (res:any) => {
-        alert('Bentornato!');
-        
-        localStorage.setItem('user', res.user.username);
-        //this.router.navigate(['/home']);
-      },
-      error: (err) => {
-        alert(err.error.message || 'Login Error');
-      }
+  ngOnInit(): void {
+    // Inizializzazione del form con validatori
+    this.loginForm = new FormGroup({
+      email: new FormControl('', [
+        Validators.required, 
+        Validators.email
+      ]),
+      password: new FormControl('', [
+        Validators.required
+      ])
     });
+  }
+
+  /**
+   * Gestisce l'invio del form di login
+   */
+  onLogin(): void {
+    if (this.loginForm.valid) {
+      console.log('Tentativo di login in corso...', this.loginForm.value);
+      
+      // Chiamata al metodo login dell'AuthService
+      this.authService.login(this.loginForm.value).subscribe({
+        next: (response) => {
+          console.log('Login effettuato con successo!', response);
+          // La navigazione verso la dashboard solitamente è gestita 
+          // all'interno del servizio tramite .tap(), 
+          // ma puoi aggiungerla anche qui se preferisci.
+          this.router.navigate(['/dashboard']);
+        },
+        error: (err) => {
+          console.error('Errore durante il login:', err);
+          if (err.status === 401) {
+            alert('Credenziali non valide. Riprova.');
+          } else {
+            alert('Si è verificato un errore sul server.');
+          }
+        }
+      });
+    } else {
+      // Evidenzia gli errori se il form è invalido
+      this.loginForm.markAllAsTouched();
+    }
   }
 }

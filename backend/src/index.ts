@@ -7,11 +7,15 @@ import { login, register } from './controllers/authController.js';
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:4200',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 
 app.use('/api', authRoutes);
-//app.post('/api/register', register);
+app.post('/api/register', register);
 //app.post('/api/login', login);
 
 const startServer = async () => {
@@ -23,9 +27,12 @@ const startServer = async () => {
 
     app.listen(3000, () => {
       console.log('Server ready on http://localhost:3000');
+
+      setInterval(() => {}, 1000000);
     });
   } catch (error) {
     console.error('Error while connecting DB', error);
+    process.exit(1);
   }
 };
 

@@ -1,30 +1,60 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormGroup, FormsModule, FormBuilder, Validators } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-
+import { ReactiveFormsModule, FormGroup, FormControl, 
+  Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms'; 
+import { Router, RouterModule } from '@angular/router';
+import { MapComponent } from '../map/map';
+import { AuthService } from '../../services/auth';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, MapComponent],
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })
-export class Register {
-  userData = { username: '', email: '', password: '' };
+export class Register implements OnInit {
+  //userData = { username: '', email: '', password: '' };
+  registerForm!: FormGroup;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+  ) {}
+
+  ngOnInit(): void {
+    this.registerForm = new FormGroup(
+      {
+        username: new FormControl('', [Validators.required]),
+        email: new FormControl('', [Validators.required, Validators.email]),
+        password: new FormControl('', [Validators.required, Validators.minLength(3)]),
+        confirmPassword: new FormControl('', [Validators.required]),
+      },
+      { validators: this.passwordMatchValidator },
+    ); // Aggiungi il validatore qui
+  }
+  
+  passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const password = control.get('password');
+    const confirmPassword = control.get('confirmPassword');
+
+    return password && confirmPassword && password.value !== confirmPassword.value
+      ? { mismatch: true }
+      : null;
+  };
 
   onRegister() {
-    console.log('il tasto è stato premuto');
-    this.http.post('http://localhost:3000/api/register', this.userData).subscribe({
-      next: (res) => alert('registration completed'),
+    console.log('Tentativo registrazione in corso...');
+
+    this.authService.register(this.registerForm).subscribe({
+      next: (res) => {
+        alert('Register Success!');
+        this.router.navigate(['/login']);
+      },
       error: (err) => {
         if (err.status === 400) {
-          alert('Attenzione: questo utente esiste già!');
+          alert('Attenzione: questo utente esiste già');
         } else {
-          alert("C'è stato un errore nel server.");
+          alert('Errore del server. Riprova più tardi');
         }
       },
     });

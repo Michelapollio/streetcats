@@ -26,12 +26,12 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  
+
   .logo-img {
     height: 35px; /* Dimensione precisa per l'icona zampa */
     width: auto;
   }
-  
+
   .brand-name {
     font-weight: 700;
     font-size: 1.4rem;
@@ -43,7 +43,7 @@
 /* SEARCH BAR SECTION */
 .search-section {
   flex: 0 1 450px; /* Lunghezza barra */
-  
+
   .search-bar {
     position: relative;
     display: flex;
@@ -58,8 +58,13 @@
       font-size: 0.95rem;
       color: #666;
 
-      &::placeholder { color: #999; }
-      &:focus { outline: none; background: #ebedf0; }
+      &::placeholder {
+        color: #999;
+      }
+      &:focus {
+        outline: none;
+        background: #ebedf0;
+      }
     }
 
     .search-icon {
@@ -81,7 +86,9 @@
     text-decoration: none;
     color: #333;
     font-weight: 500;
-    &:hover { color: #5d7c77; }
+    &:hover {
+      color: #5d7c77;
+    }
   }
 
   .auth-buttons {
@@ -105,7 +112,32 @@
       border-radius: 20px;
       font-weight: 600;
       cursor: pointer;
-      &:hover { background: #e0923e; }
+      &:hover {
+        background: #e0923e;
+      }
     }
   }
+  
+  .btn-logout {
+      background-color: transparent;
+      color: #ff4d4d;
+      border: 1px solid #ff4d4d;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      margin-left: 10px;
+
+      &:hover {
+        background-color: #ff4d4d;
+        color: white;
+      }
+    }
+
+    .profile-link {
+      font-weight: bold;
+      color: #2c3e50;
+      // Aggiungi un'icona o stile specifico se vuoi
+    }
 }

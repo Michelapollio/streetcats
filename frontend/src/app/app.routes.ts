@@ -5,10 +5,9 @@ import { Dashboard } from './pages/dashboard/dashboard';
 import { Addcat } from './components/addcat/addcat';
 
 export const routes: Routes = [
-    {path: 'register', component:Register},
-    {path: 'login', component: Login},
-    {path: 'dashboard', component:Dashboard},
-    {path: 'addcat', component:Addcat},
-    {path: '', redirectTo: '/login', pathMatch:'full'}
-    
+    { path: 'register', component: Register },
+    { path: 'login', component: Login },
+    { path: 'dashboard', component: Dashboard }, // Questa esiste!
+    { path: 'addcat', component: Addcat },
+    { path: '', redirectTo: '/login', pathMatch: 'full' } // Reindirizza i visitatori al login
 ];

@@ -1,28 +1,47 @@
-<!DOCTYPE html>
-<div class="auth-container">
-    <div class="auth-card">
-        <h2>Accedi a Streetcats 🐾</h2>
-        <form (ngSubmit)="onLogin()">
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email"
-                 name="email" 
-                 [(ngModel)]="loginData.email" required>
-            </div>
+<div class="login-page">
+  
+  <div class="login-side">
+    <div class="login-card">
+      <div class="logo-container">
+        <img src="assets/logo-streetcats.png" alt="StreetCats Logo">
+        <h1>STREET<span>CATS</span></h1>
+      </div>
 
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password"
-                 name="password" 
-                 [(ngModel)]="loginData.password" required>
-            </div>
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" formControlName="email" placeholder="nome@esempio.com">
+          <small *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid" class="error-text">
+            Inserisci un'email valida.
+          </small>
+        </div>
 
-            <button type="submit" class="btn-primary">
-                Entra
-            </button>
-        </form>
-        <p>Non hai un account? <a routerLink="/register">
-            Registrati
-        </a></p>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" formControlName="password" placeholder="••••••••">
+          <small *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" class="error-text">
+            La password è obbligatoria.
+          </small>
+        </div>
+
+        <button type="submit" class="btn-login" [disabled]="loginForm.invalid">
+          Entra
+        </button>
+        
+        <p class="switch-auth">
+          Non hai un account? <a routerLink="/register">Registrati</a>
+        </p>
+      </form>
     </div>
+  </div>
+
+  <div class="map-side">
+    <app-map 
+      [mapId]="'loginMap'"
+      [interactive]="false" 
+      [zoom]="14">
+    </app-map>
+    <div class="map-overlay"></div>
+  </div>
+
 </div>
