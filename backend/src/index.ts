@@ -1,27 +1,39 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
 import authRoutes from './routes/authRoutes.js'
 import sequelize from './config/database.js';
-import User from './models/userModel.js';
-import { login, register } from './controllers/authController.js';
+import catRoutes from './routes/catRoutes.js' 
+import { fileURLToPath } from 'url'; 
+import { register , login} from './controllers/authController.js';
+
+// ricostruisco __dirname in ambiente ES module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
+
+/*MIDDLEWARE JSON*/
 app.use(express.json());
+
+//CORS
 app.use(cors({
   origin: 'http://localhost:4200',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+//Cartella per ulpoads
+//app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
-app.use('/api', authRoutes);
-app.post('/api/register', register);
-//app.post('/api/login', login);
+//ROUTES
+app.use('/api/auth', authRoutes);
+app.use('/api/cats', catRoutes);
 
+
+//START SERVER
 const startServer = async () => {
   try {
-    // Sincronizza i modelli con il DB (Crea la tabella se non esiste)
-    // Nota: 'alter: true' aggiorna le tabelle esistenti senza cancellarle
     await sequelize.sync({ alter: true });
     console.log('Database connected');
 
