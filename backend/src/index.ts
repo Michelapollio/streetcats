@@ -5,7 +5,6 @@ import authRoutes from './routes/authRoutes.js'
 import sequelize from './config/database.js';
 import catRoutes from './routes/catRoutes.js' 
 import { fileURLToPath } from 'url'; 
-import { register , login} from './controllers/authController.js';
 
 // ricostruisco __dirname in ambiente ES module
 const __filename = fileURLToPath(import.meta.url);
@@ -24,7 +23,7 @@ app.use(cors({
 }));
 
 //Cartella per ulpoads
-//app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 //ROUTES
 app.use('/api/auth', authRoutes);

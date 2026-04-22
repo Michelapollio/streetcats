@@ -53,12 +53,8 @@ export class Login implements OnInit {
       
       // Chiamata al metodo login dell'AuthService
       this.authService.login(this.loginForm.value).subscribe({
-        next: (response) => {
-          console.log('Login effettuato con successo!', response);
-          // La navigazione verso la dashboard solitamente è gestita 
-          // all'interno del servizio tramite .tap(), 
-          // ma puoi aggiungerla anche qui se preferisci.
-          this.router.navigate(['/dashboard']);
+        next: (res) => {
+          console.log('Login effettuato con successo!', res);
         },
         error: (err) => {
           console.error('Errore durante il login:', err);

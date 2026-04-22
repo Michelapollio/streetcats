@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import { Sequelize } from 'sequelize';
 import User from '../models/userModel.js'
-import {Op} from 'sequelize'
+import {Op} from 'sequelize';
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = process.env.JWT_SECRET || "defaultsecret";
 
 export const register = async (req:Request, res:Response) => {
     try {
@@ -61,8 +63,8 @@ export const login = async (req: Request, res: Response) => {
         if (!user){
             return res.status(404).json({message:'User not found'});
         }
-        console.log("Password inviata:", password);
-        console.log("Hash nel DB:", user.passwordHash);
+        //console.log("Password inviata:", password);
+        //console.log("Hash nel DB:", user.passwordHash);
 
         if(!user.passwordHash){
             return res.status(500).json({message:"Error: user not in DB"});
@@ -71,14 +73,22 @@ export const login = async (req: Request, res: Response) => {
         const isMatch = await bcrypt.compare(password, user.passwordHash);
 
         if(!isMatch){
-            res.status(401).json({
+            return res.status(401).json({
                 message: "Incorrect password"
             });
         }
+        //generazione del token
+        const token = jwt.sign({
+            id: user.id,
+            email: user.email,
+            username: user.username
+        },
+        JWT_SECRET, {expiresIn: "1h"});
 
         //risposta di successo
-        res.status(200).json({
+        return res.status(200).json({
             message:"Login successful",
+            token,
             user: {
                 id: user.id,
                 username: user.username,
@@ -86,7 +96,7 @@ export const login = async (req: Request, res: Response) => {
             }
         });
     } catch (error: any){
-        res.status(500).json({
+        return res.status(500).json({
             error: "Server Error",
             message: error.message
         });
