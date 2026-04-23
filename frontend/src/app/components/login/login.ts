@@ -55,6 +55,7 @@ export class Login implements OnInit {
       this.authService.login(this.loginForm.value).subscribe({
         next: (res) => {
           console.log('Login effettuato con successo!', res);
+          this.authService.saveUser(res.user);
           this.router.navigate(['/dashboard']);
         },
         error: (err) => {

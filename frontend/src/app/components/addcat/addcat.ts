@@ -7,6 +7,7 @@ import { ElementRef } from '@angular/core';
 import { MarkdownModule } from 'ngx-markdown';
 import { CatsService } from '../../services/cats';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-addcat',
@@ -26,6 +27,7 @@ export class Addcat implements OnInit, AfterViewInit {
   constructor(
     private catService: CatsService,
     private router: Router,
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
@@ -123,14 +125,24 @@ export class Addcat implements OnInit, AfterViewInit {
     if (this.catForm.valid) {
       const formData = new FormData();
 
+      const currentUser = this.authService.getUser();
+      const userId = currentUser?.id;
+
+      if (!userId) {
+        alert('Devi essere loggato per aggiungere un avvistamento!');
+        this.router.navigate(['/login']);
+        return;
+      }
+
       formData.append('title', this.catForm.get('title')?.value);
-      formData.append('description', this.catForm.get('description')?.value);
+      formData.append('descriptionMd', this.catForm.get('description')?.value);
       formData.append('latitude', this.catForm.get('latitude')?.value);
       formData.append('longitude', this.catForm.get('longitude')?.value);
+      formData.append('userId', userId);
 
       const photoFile = this.catForm.get('photo')?.value;
       if (photoFile) {
-        formData.append('image', photoFile, photoFile.name);
+        formData.append('photo', photoFile, photoFile.name);
       }
 
       console.log('Invio dati al server...');
