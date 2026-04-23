@@ -32,7 +32,7 @@ export class Login implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Inizializzazione del form con validatori
+    console.log('Login component initialized');
     this.loginForm = new FormGroup({
       email: new FormControl('', [
         Validators.required, 
@@ -55,6 +55,7 @@ export class Login implements OnInit {
       this.authService.login(this.loginForm.value).subscribe({
         next: (res) => {
           console.log('Login effettuato con successo!', res);
+          this.router.navigate(['/dashboard']);
         },
         error: (err) => {
           console.error('Errore durante il login:', err);
