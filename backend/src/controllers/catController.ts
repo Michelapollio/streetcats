@@ -34,3 +34,13 @@ export const createCat = async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Server error saving cat' });
   }
 };
+
+export const getAllCats = async (req: Request, res: Response) => {
+  try {
+    const cats = await Cat.findAll();
+    return res.status(200).json(cats);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Server error retrieving cats' });
+  }
+}

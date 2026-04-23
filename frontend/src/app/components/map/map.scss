@@ -1,0 +1,24 @@
+::ng-deep .custom-cat-marker {
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: transform 0.2s;
+}
+
+::ng-deep .custom-cat-marker:hover {
+  transform: scale(1.2);
+}
+
+/* Stile per il contenuto del Popup */
+::ng-deep .cat-popup .leaflet-popup-content-wrapper {
+  border-radius: 15px;
+  padding: 0;
+  overflow: hidden;
+}
+
+::ng-deep .cat-popup .leaflet-popup-content {
+  margin: 0;
+  width: 200px !important;
+}

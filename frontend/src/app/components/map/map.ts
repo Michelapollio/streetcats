@@ -63,13 +63,33 @@ export class MapComponent implements AfterViewInit {
     }
   }
 
-  public addMarker(lat: number, lng: number, iconHtml?: string) {
+  public addMarker(lat: number, lng: number, iconHtml?: string, popupContent?: string) {
     const icon = L.divIcon({
-      html: iconHtml || '🐱',
+      html: `<div class="marker-pin">${iconHtml || '🐱'}</div>`,
       className: 'cat-marker-icon',
       iconSize: [40, 40],
       iconAnchor: [15, 30],
+      popupAnchor: [0, -30],
     });
-    return L.marker([lat, lng], { icon }).addTo(this.map);
+    const marker = L.marker([lat, lng], { icon }).addTo(this.map);
+
+    if (popupContent) {
+      marker.bindPopup(popupContent, {
+        minWidth: 200,
+        maxWidth: 250,
+        className: 'cat-popup',
+      });
+    }
+
+    return marker;
   }
+  /*-----PULIZIA MAPPA----
+  public clearMap(): void {
+    this.map.eachLayer((layer) => {
+      if (layer instanceof L.Marker) {
+        this.map.removeLayer(layer);
+      }
+    });
+  }
+    ----*/
 }

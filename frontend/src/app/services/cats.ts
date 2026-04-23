@@ -13,4 +13,8 @@ export class CatsService {
   saveCat(formData: FormData): Observable<any>{
     return this.http.post(this.apiUrl, formData);
   }
+
+  getCats(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
+  }
 }
