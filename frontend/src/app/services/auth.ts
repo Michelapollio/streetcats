@@ -42,15 +42,15 @@ export class AuthService {
 
   //REGISTRAZIONE
   register(userData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, userData);
+    return this.http.post(`${this.apiUrl}/auth/register`, userData);
   }
 
   //RECUOPERO INFO UTENTE
-
   saveUser(user: any): void {
     window.localStorage.removeItem(this.USER_KEY);
     window.localStorage.setItem(this.USER_KEY, JSON.stringify(user));
   }
+  
   getUser(): any {
     const user = window.localStorage.getItem(this.USER_KEY);
     if (user) {

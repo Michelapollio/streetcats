@@ -5,6 +5,7 @@ import authRoutes from './routes/authRoutes.js'
 import sequelize from './config/database.js';
 import catRoutes from './routes/catRoutes.js' 
 import { fileURLToPath } from 'url'; 
+import './models/rel.js';
 
 // ricostruisco __dirname in ambiente ES module
 const __filename = fileURLToPath(import.meta.url);

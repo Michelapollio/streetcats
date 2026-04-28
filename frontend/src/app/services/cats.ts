@@ -8,13 +8,21 @@ import { Observable } from 'rxjs';
 export class CatsService {
   private apiUrl = 'http://localhost:3000/api/cats';
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient) {}
 
-  saveCat(formData: FormData): Observable<any>{
+  saveCat(formData: FormData): Observable<any> {
     return this.http.post(this.apiUrl, formData);
   }
 
   getCats(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
+  }
+
+  getCatsById(id: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
+
+  addComment(commentData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${commentData.catId}/comments`, commentData);
   }
 }

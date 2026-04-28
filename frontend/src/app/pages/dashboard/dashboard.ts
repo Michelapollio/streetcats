@@ -57,14 +57,6 @@ export class Dashboard implements OnInit, AfterViewInit {
       attribution: '&copy; OpenStreetMap',
     }).addTo(this.map);
 
-    /*const oliverData = {
-      name: 'Oliver',
-      photo: 'assets/cat-sample.jpg',
-      description: 'Friendly tuxedo, seen here often',
-      timeAgo: '2 hours ago',
-    };
-
-    this.addCatMarker(40.828770375418586, 14.19051839800037, oliverData);*/
   }
 
   private loadCats(): void {
@@ -73,6 +65,7 @@ export class Dashboard implements OnInit, AfterViewInit {
         cats.forEach((cat: any) => {
           // Adattiamo i dati del DB alla funzione addCatMarker
           const catData = {
+            id: cat.id,
             name: cat.title,
             // Se photoUrl inizia già con /uploads, lo usiamo, altrimenti aggiungiamo baseUrl
             photo: cat.photoUrl ? `${this.baseUrl}${cat.photoUrl}` : 'assets/cat-placeholder.jpg',
@@ -123,7 +116,39 @@ export class Dashboard implements OnInit, AfterViewInit {
     marker.addTo(this.map).bindPopup(popupContent, {
       className: 'leaflet-custom-popup',
       minWidth: 250,
+      closeButton: true,
+      autoPan:true,
     });
+
+    marker.on('popupopen', () => {
+    // Ora che il popup è nel DOM, cerchiamo il bottone tramite l'ID unico
+    const btn = document.getElementById(btnId);
+    
+    if (btn) {
+      console.log('Bottone trovato nel DOM, aggiungo listener...');
+      
+      btn.addEventListener('click', (e) => {
+        // Evitiamo che il click si propaghi alla mappa sotto
+        e.stopPropagation();
+        e.preventDefault();
+
+        console.log('Tentativo di navigazione per ID', data.id);
+        
+        this.zone.run(() => {
+          this.router.navigate(['/cat-details', data.id]).then(navigated => {
+          if (navigated) {
+            console.log('Navigazione riuscita!');
+          } else {
+            console.error('Navigazione fallita! Controlla le rotte.');
+          }
+        }).catch(err => {
+          console.error('Errore durante la navigazione:', err);
+        });
+      });
+    });
+    }
+  });
+
   }
 
   navigateToAddCat() {

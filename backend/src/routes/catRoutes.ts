@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createCat, getAllCats } from '../controllers/catController.js';
+import { createCat, getAllCats, getCatById, addCommentToCat} from '../controllers/catController.js';
 import { upload } from '../middlewares/upload.js';
 
 const router = Router();
@@ -10,6 +10,10 @@ router.post(
   createCat
 );
 
+router.post('/:id/comments', addCommentToCat);
+
 router.get('/', getAllCats);
+
+router.get('/:id', getCatById);
 
 export default router;

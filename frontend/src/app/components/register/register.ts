@@ -45,15 +45,18 @@ export class Register implements OnInit {
   onRegister() {
     console.log('Tentativo registrazione in corso...');
 
-    this.authService.register(this.registerForm).subscribe({
+    this.authService.register(this.registerForm.value).subscribe({
       next: (res) => {
+        console.log('Risposta server:', res);
         alert('Register Success!');
         this.router.navigate(['/login']);
       },
       error: (err) => {
         if (err.status === 400) {
+          console.error('Dettaglio errore:', err);
           alert('Attenzione: questo utente esiste già');
         } else {
+          console.error('Dettaglio errore:', err);
           alert('Errore del server. Riprova più tardi');
         }
       },
