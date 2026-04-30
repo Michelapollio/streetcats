@@ -61,7 +61,13 @@ export const getCatById = async (req: Request, res: Response) => {
       include: [
         {
           model: Comment,
-          as: 'comments'
+          as: 'comments',
+          include: [{ model: User, as: 'user', attributes: ['username'] }]
+        },
+        {
+          model: User,
+          as: 'user',
+          attributes: ['username']
         }
       ]
     });

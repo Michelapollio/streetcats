@@ -17,6 +17,9 @@
           <h2>Description</h2>
           <div class="markdown-body" [innerHTML]="formattedDescription"></div>
 
+          <div class="reporter-info">
+            <span class="reporter">Reported by {{ cat.user?.username || 'Unknown' }}</span>
+          </div>
           <div class="footer-meta">
             <span class="date">Reported on {{ cat.createdAt | date: 'mediumDate' }}</span>
           </div>

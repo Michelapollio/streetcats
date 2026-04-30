@@ -67,6 +67,7 @@ export class CatDetails implements OnInit, AfterViewChecked {
   addComment(): void {
     if (!this.newCommentText.trim()) return;
 
+    const currentUserId = this.authService.getCurrentUserId();
     const commentData = {
       catId: this.cat.id, // Assicurati che cat.id sia valorizzato
       text: this.newCommentText,

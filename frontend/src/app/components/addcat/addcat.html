@@ -1,69 +1,95 @@
 <div class="page-wrapper">
-  <div class="add-cat-card">
-
+  <div class="top-nav">
     <button class="btn-back" type="button" (click)="goBack()">
-        ←
+      ← Back to Dashboard
     </button>
+  </div>
 
-    <div></div>
-    <form [formGroup]="catForm" (ngSubmit)="saveCat()" class="left-panel">
-      <div class="input-group">
-        <label>Title</label>
-        <input type="text" formControlName="title" placeholder="e.g., Tabby in Central Park" />
-      </div>
-
-      <div class="input-group">
-        <label>Photo Upload</label>
-        <div class="upload-zone" (click)="fileInput.click()">
-          <div class="preview-box" *ngIf="imagePreview">
-            <img [src]="imagePreview" alt="Preview" />
-          </div>
-          <div class="upload-controls" *ngIf="!imagePreview">
-            <span class="upload-icon">☁️</span>
-            <p>Drag or Click to Upload</p>
-          </div>
-          <input #fileInput type="file" (change)="onFileSelected($event)" hidden accept="image/*" />
+  <div class="content-container">
+    
+    <div class="left-column">
+      <form [formGroup]="catForm" (ngSubmit)="saveCat()" class="main-card form-card">
+        
+        <div class="form-header">
+          <h1>Nuovo avvistamento</h1>
         </div>
-      </div>
 
-      <div class="input-group">
-        <label>Description <span>(Markdown Supported)</span></label>
-
-        <div class="markdown-container">
-          <div class="markdown-editor">
-            <div class="editor-toolbar">
-              <button type="button" (click)="insertMarkup('bold')">B</button>
-              <button type="button" (click)="insertMarkup('italic')">I</button>
-              <button type="button" (click)="insertMarkup('link')">🔗</button>
-              <button type="button" (click)="insertMarkup('code')">&lt;/&gt;</button>
-            </div>
-            <textarea
-              #editor
-              formControlName="description"
-              placeholder="Start typing..."
-            ></textarea>
+        <div class="form-body">
+          <div class="input-group">
+            <label>Title</label>
+            <input type="text" formControlName="title" placeholder="e.g., Tabby in Central Park" />
           </div>
 
-          <div class="live-preview" *ngIf="catForm.get('description')?.value">
-            <div class="preview-header">Live Preview</div>
-            <div class="preview-body">
-              <markdown [data]="catForm.get('description')?.value"></markdown>
+          <div class="input-group">
+            <label>Photo Upload</label>
+            <div class="upload-zone" (click)="fileInput.click()" [class.has-image]="imagePreview">
+              <div class="preview-box" *ngIf="imagePreview">
+                <img [src]="imagePreview" alt="Preview" />
+              </div>
+              <div class="upload-controls" *ngIf="!imagePreview">
+                <span class="upload-icon">☁️</span>
+                <p>Drag or Click to Upload</p>
+              </div>
+              <input #fileInput type="file" (change)="onFileSelected($event)" hidden accept="image/*" />
             </div>
           </div>
+
+          <div class="input-group">
+            <label>Description <span>(Markdown Supported)</span></label>
+            <div class="markdown-container">
+              <div class="markdown-editor">
+                <div class="editor-toolbar">
+                  <button type="button" (click)="insertMarkup('bold')">B</button>
+                  <button type="button" (click)="insertMarkup('italic')">I</button>
+                  <button type="button" (click)="insertMarkup('link')">🔗</button>
+                  <button type="button" (click)="insertMarkup('code')">&lt;/&gt;</button>
+                </div>
+                <textarea
+                  #editor
+                  formControlName="description"
+                  placeholder="Start typing..."
+                ></textarea>
+              </div>
+
+              <div class="live-preview" *ngIf="catForm.get('description')?.value">
+                <div class="preview-header">Live Preview</div>
+                <div class="preview-body">
+                  <markdown [data]="catForm.get('description')?.value"></markdown>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <button class="btn-save" type="submit" [disabled]="catForm.invalid">
-        Salva avvistamento
-      </button>
-    </form>
-
-    <div class="right-panel">
-      <app-map [mapId]="'addCatMap'" (mapClick)="onMapClick($event)"> </app-map>
-
-      <button type="button" class="btn-confirm" [disabled]="catForm.invalid" (click)="saveCat()">
-        Confirm Location
-      </button>
+        <div class="form-footer">
+          <button class="btn-save" type="submit" [disabled]="catForm.invalid">
+            Salva avvistamento
+          </button>
+        </div>
+      </form>
     </div>
+
+    <div class="right-column">
+      <div class="side-card map-card">
+        <div class="map-header">
+          <h3>Set Location</h3>
+          <p>Click on the map to pin the sighting</p>
+        </div>
+        <div class="map-container-wrapper">
+          <app-map [mapId]="'addCatMap'" (mapClick)="onMapClick($event)"> </app-map>
+          
+          <div class="coords-status" *ngIf="catForm.get('latitude')?.value">
+            📍 Location set!
+          </div>
+        </div>
+        
+        <div class="map-footer">
+          <button type="button" class="btn-confirm" [disabled]="catForm.invalid" (click)="saveCat()">
+            Confirm & Save
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
