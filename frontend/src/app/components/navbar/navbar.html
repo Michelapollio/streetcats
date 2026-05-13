@@ -14,7 +14,7 @@
 
     <div class="nav-menu">
       <a routerLink="/explore" class="nav-item">Explore</a>
-      <a routerLink="/about" class="nav-item">About</a>
+      <a routerLink="/info" class="nav-item">About</a>
 
       <ng-container *ngIf="isLoggedIn$ | async as loggedIn; else guestButtons">
         <a routerLink="/profile" class="nav-item profile-link">My Profile</a>

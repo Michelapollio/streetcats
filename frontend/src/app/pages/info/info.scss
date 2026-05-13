@@ -1,0 +1,95 @@
+/* info.component.scss */
+.info-container {
+  padding: 60px 20px;
+  background-color: #e3f2fd; /* Azzurrino di sfondo visibile in immagine.png */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.info-card {
+  background: white;
+  border-radius: 15px;
+  padding: 40px;
+  max-width: 700px;
+  width: 100%;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+h1 {
+  color: #f0a24e
+}
+
+.info-header {
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  
+  .about-logo {
+    width: 200px;
+    height: 50px;
+    margin: 0;
+  }
+
+  h1 {
+    margin: 0;
+  }
+  
+  h1 {
+    color: #5f9ea0; /* Colore verde acqua dal logo */
+    font-weight: 700;
+  }
+}
+
+.info-section {
+  margin-bottom: 25px;
+  line-height: 1.6;
+  color: #444;
+
+  h3 {
+    color: #2c3e50;
+    border-left: 4px solid #5f9ea0;
+    padding-left: 10px;
+    margin-bottom: 15px;
+  }
+}
+
+.contact-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 30px;
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: #707070;
+  }
+}
+
+.btn-back {
+  background-color: #5f9ea0;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.separator {
+  border: 0;
+  border-top: 1px solid #eee;
+  margin: 20px 0;
+}
