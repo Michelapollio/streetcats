@@ -4,8 +4,27 @@
     "marked": "^18.0.2"
   },
   "devDependencies": {
-    "@playwright/test": "^1.59.1",
-    "@types/node": "^25.6.0"
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^25.9.3"
   },
-  "scripts": {}
+  "scripts": {},
+  "name": "streetcats",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Michelapollio/streetcats.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Michelapollio/streetcats/issues"
+  },
+  "homepage": "https://github.com/Michelapollio/streetcats#readme"
 }

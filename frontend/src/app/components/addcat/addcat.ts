@@ -34,7 +34,8 @@ export class Addcat implements OnInit, AfterViewInit {
     this.catForm = new FormGroup({
       title: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
-      photo: new FormControl(null, Validators.required),
+      // foto NON obbligatoria
+      photo: new FormControl(null),
       latitude: new FormControl(null, Validators.required),
       longitude: new FormControl(null, Validators.required),
     });

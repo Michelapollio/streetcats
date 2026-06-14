@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, AfterViewInit, Output, EventEmitter, NgZone } from '@angular/core';
 import * as L from 'leaflet';
 
 @Component({
@@ -26,7 +26,7 @@ export class MapComponent implements AfterViewInit {
   @Output() mapClick = new EventEmitter<L.LeafletEvent>();
   private map!: L.Map;
 
-  constructor() {}
+  constructor(private ngZone: NgZone) {}
 
   ngAfterViewInit() {
     this.initMap();
@@ -59,7 +59,12 @@ export class MapComponent implements AfterViewInit {
     }).addTo(this.map);
 
     if (this.interactive) {
-      this.map.on('click', (e: L.LeafletMouseEvent) => this.mapClick.emit(e));
+      this.map.on('click', (e: L.LeafletMouseEvent) => {
+  
+        this.ngZone.run(() => {
+          this.mapClick.emit(e);
+        });
+      });
     }
   }
 

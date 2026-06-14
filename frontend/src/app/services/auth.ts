@@ -15,10 +15,18 @@ export class AuthService {
 
   private readonly USER_KEY = 'auth-user';
 
+  /*constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {}**/
   constructor(
     private http: HttpClient,
     private router: Router,
-  ) {}
+  ) {
+    if (typeof window !== 'undefined' && window.localStorage.getItem('token')) {
+      this.loggedIn.next(true);
+    }
+  }
 
   //LOGIN
   isLoggedIn(): boolean {
@@ -37,7 +45,10 @@ export class AuthService {
   }
 
   logout() {
+    window.localStorage.removeItem('token');
+    window.localStorage.removeItem(this.USER_KEY);
     this.loggedIn.next(false);
+    this.router.navigate(['/login']);
   }
 
   //REGISTRAZIONE
