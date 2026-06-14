@@ -4,7 +4,7 @@ test.describe('Autenticazione - Registrazione Nuovo Utente', () => {
 
   // Eseguiamo prima di ogni test la navigazione alla pagina di registrazione
   test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:4200/register'); // Adatta la rotta se diversa
+    await page.goto('http://localhost:4200/register');
   });
 
   test('Test 10: Dovrebbe permettere la registrazione con dati validi e reindirizzare al login/dashboard', async ({ page }) => {
@@ -24,7 +24,7 @@ test.describe('Autenticazione - Registrazione Nuovo Utente', () => {
     await bottoneRegistrati.click();
 
     // 2. Assert: Verifica il comportamento successivo (es. redirect alla pagina di login)
-    await expect(page).toHaveURL(/login/);
+    await expect(page).toHaveURL('http://localhost:4200/login');
   });
 
  
