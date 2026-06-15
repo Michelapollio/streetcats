@@ -13,6 +13,6 @@ export const routes: Routes = [
     { path: 'addcat', component: Addcat },
     {path: 'cat-details/:id', component: CatDetails},
     { path: 'info', component: Info },
-    { path: '', redirectTo: '/login', pathMatch: 'full' } // Reindirizza i visitatori al login
+    { path: '', redirectTo: '/dashboard', pathMatch: 'full' } // Reindirizza i visitatori alla dashboard
     
 ];
